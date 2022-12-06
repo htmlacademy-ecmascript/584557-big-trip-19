@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Igor Zorin](https://up.htmlacademy.ru/ecmascript/19/user/584557).
-* Наставник: `Неизвестно`.
+* Наставник: [Владислав Поляков](https://htmlacademy.ru/profile/polrk).
 
 ---
 
