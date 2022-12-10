@@ -29,6 +29,8 @@ function createFiltersTemplate() {
 }
 
 export default class FiltersView {
+  element;
+
   getTemplate() {
     return createFiltersTemplate();
   }

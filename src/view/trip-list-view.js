@@ -5,6 +5,8 @@ function createTripListTemplate() {
 }
 
 export default class TripListView {
+  element;
+
   getTemplate() {
     return createTripListTemplate();
   }

@@ -43,6 +43,8 @@ function createTripPointTemplate() {
 }
 
 export default class TripPointView {
+  element;
+
   getTemplate() {
     return createTripPointTemplate();
   }

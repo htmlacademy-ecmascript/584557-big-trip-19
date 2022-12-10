@@ -161,6 +161,8 @@ function createEditTripPointFormTemplate() {
 }
 
 export default class EditTripPointFormView {
+  element;
+
   getTemplate() {
     return createEditTripPointFormTemplate();
   }

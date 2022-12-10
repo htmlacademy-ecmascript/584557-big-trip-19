@@ -6,6 +6,7 @@ import EditTripPointFormView from '../view/edit-trip-point-form-view.js';
 import {render} from '../render.js';
 
 export default class TripBoardPresenter {
+  boardContainer;
   tripListComponent = new TripListView();
 
   constructor({boardContainer}) {

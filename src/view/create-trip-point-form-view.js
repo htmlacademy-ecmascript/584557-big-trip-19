@@ -168,6 +168,8 @@ function createCreateTripPointFormTemplate() {
 }
 
 export default class CreateTripPointFormView {
+  element;
+
   getTemplate() {
     return createCreateTripPointFormTemplate();
   }
