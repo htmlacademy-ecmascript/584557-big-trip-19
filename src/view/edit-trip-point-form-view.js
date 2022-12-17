@@ -164,6 +164,7 @@ export default class EditTripPointFormView {
   element;
   point;
   offers;
+  destinations;
 
   constructor(point, offers, offersTypes, destinations) {
     this.point = point;

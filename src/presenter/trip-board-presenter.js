@@ -9,6 +9,7 @@ export default class TripBoardPresenter {
   boardContainer;
   points;
   offers;
+  destinations;
   tripListComponent = new TripListView();
 
   constructor({ boardContainer, pointsModel, offersModel, destinationsModel }) {
