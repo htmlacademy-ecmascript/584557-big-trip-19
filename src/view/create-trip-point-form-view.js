@@ -168,21 +168,21 @@ function createCreateTripPointFormTemplate() {
 }
 
 export default class CreateTripPointFormView {
-  element;
+  #element;
 
-  getTemplate() {
+  #getTemplate() {
     return createCreateTripPointFormTemplate();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

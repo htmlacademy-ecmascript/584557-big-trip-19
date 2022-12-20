@@ -79,28 +79,28 @@ function createTripPointTemplate(pointData, offersData) {
 }
 
 export default class TripPointView {
-  element;
-  point;
-  offers;
+  #element;
+  #point;
+  #offers;
 
   constructor(point, offers) {
-    this.point = point;
-    this.offers = offers;
+    this.#point = point;
+    this.#offers = offers;
   }
 
-  getTemplate() {
-    return createTripPointTemplate(this.point, this.offers);
+  #getTemplate() {
+    return createTripPointTemplate(this.#point, this.#offers);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

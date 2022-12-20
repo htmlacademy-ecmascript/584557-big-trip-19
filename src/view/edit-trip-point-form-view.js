@@ -161,36 +161,37 @@ function createEditTripPointFormTemplate(pointData, offersData, offersTypes, des
 }
 
 export default class EditTripPointFormView {
-  element;
-  point;
-  offers;
-  destinations;
+  #element;
+  #point;
+  #offers;
+  #offersTypes;
+  #destinations;
 
   constructor(point, offers, offersTypes, destinations) {
-    this.point = point;
-    this.offers = offers;
-    this.offersTypes = offersTypes;
-    this.destinations = destinations;
+    this.#point = point;
+    this.#offers = offers;
+    this.#offersTypes = offersTypes;
+    this.#destinations = destinations;
   }
 
-  getTemplate() {
+  #getTemplate() {
     return createEditTripPointFormTemplate(
-      this.point,
-      this.offers,
-      this.offersTypes,
-      this.destinations
+      this.#point,
+      this.#offers,
+      this.#offersTypes,
+      this.#destinations
     );
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
