@@ -5,21 +5,21 @@ function createTripListTemplate() {
 }
 
 export default class TripListView {
-  element;
+  #element;
 
-  getTemplate() {
+  #getTemplate() {
     return createTripListTemplate();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.#getTemplate());
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

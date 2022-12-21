@@ -1,9 +1,9 @@
 import { points } from '../mock/trip-points.js';
 
 export default class TripPointsModel {
-  _tripPoints = points;
+  #tripPoints = points;
 
   get points() {
-    return this._tripPoints;
+    return this.#tripPoints;
   }
 }

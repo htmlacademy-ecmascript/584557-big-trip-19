@@ -6,39 +6,69 @@ import EditTripPointFormView from '../view/edit-trip-point-form-view.js';
 import { render } from '../render.js';
 
 export default class TripBoardPresenter {
-  boardContainer;
-  points;
-  offers;
-  destinations;
-  tripListComponent = new TripListView();
+  #boardContainer;
+  #points;
+  #offers;
+  #offersTypes;
+  #destinations;
+  #tripListComponent = new TripListView();
 
   constructor({ boardContainer, pointsModel, offersModel, destinationsModel }) {
-    this.boardContainer = boardContainer;
-    this.points = [...pointsModel.points];
-    this.offers = {...offersModel.offers};
-    this.offersTypes = [...offersModel.offersTypes];
-    this.destinations = [...destinationsModel.destinations];
+    this.#boardContainer = boardContainer;
+    this.#points = [...pointsModel.points];
+    this.#offers = {...offersModel.offers};
+    this.#offersTypes = [...offersModel.offersTypes];
+    this.#destinations = [...destinationsModel.destinations];
   }
 
   init() {
-    render(new SortView(), this.boardContainer);
-    render(this.tripListComponent, this.boardContainer);
-    render(new CreateTripPointFormView(), this.tripListComponent.getElement());
+    render(new SortView(), this.#boardContainer);
+    render(this.#tripListComponent, this.#boardContainer);
+    render(new CreateTripPointFormView(), this.#tripListComponent.element);
 
-    const pointForEditForm = this.points[2];
-    render(
-      new EditTripPointFormView(
-        pointForEditForm,
-        this.offers[pointForEditForm.type],
-        this.offersTypes,
-        this.destinations
-      ),
-      this.tripListComponent.getElement()
+    this.#points.forEach(this.#renderPoint.bind(this));
+  }
+
+  #renderPoint(pointData) {
+    const offers = this.#offers[pointData.type];
+    const point = new TripPointView(pointData, offers);
+    const poinRollupBtnElement = point.element.querySelector('.event__rollup-btn');
+
+    const pointEditForm = new EditTripPointFormView(
+      pointData,
+      this.#offers[pointData.type],
+      this.#offersTypes,
+      this.#destinations
     );
 
-    this.points.forEach((point) => {
-      const offers = this.offers[point.type];
-      render(new TripPointView(point, offers), this.tripListComponent.getElement());
+    poinRollupBtnElement.addEventListener('click', (evt) => {
+      evt.preventDefault();
+
+      point.element.replaceWith(pointEditForm.element);
+      document.addEventListener('keydown', escKeyDownHandler);
     });
+
+    function escKeyDownHandler(evt) {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        evt.preventDefault();
+        closeEditForm(evt);
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    }
+
+    const editFormElement = pointEditForm.element.querySelector('.event');
+    const editFormRollupBtnElement = pointEditForm.element.querySelector('.event__rollup-btn');
+
+    function closeEditForm(evt) {
+      evt.preventDefault();
+
+      pointEditForm.element.replaceWith(point.element);
+      document.removeEventListener('keydown', escKeyDownHandler);
+    }
+
+    editFormElement.addEventListener('submit', closeEditForm);
+    editFormRollupBtnElement.addEventListener('click', closeEditForm);
+
+    render(point, this.#tripListComponent.element);
   }
 }
