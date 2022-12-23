@@ -48,6 +48,14 @@ export default class TripBoardPresenter {
       document.addEventListener('keydown', escKeyDownHandler);
     });
 
+    function escKeyDownHandler(evt) {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        evt.preventDefault();
+        closeEditForm(evt);
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
+    }
+
     const editFormElement = pointEditForm.element.querySelector('.event');
     const editFormRollupBtnElement = pointEditForm.element.querySelector('.event__rollup-btn');
 
@@ -56,14 +64,6 @@ export default class TripBoardPresenter {
 
       pointEditForm.element.replaceWith(point.element);
       document.removeEventListener('keydown', escKeyDownHandler);
-    }
-
-    function escKeyDownHandler(evt) {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        closeEditForm(evt);
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
     }
 
     editFormElement.addEventListener('submit', closeEditForm);
