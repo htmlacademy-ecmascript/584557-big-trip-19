@@ -3,6 +3,7 @@ import TripListView from '../view/trip-list-view.js';
 import TripPointView from '../view/trip-point-view.js';
 import CreateTripPointFormView from '../view/create-trip-point-form-view.js';
 import EditTripPointFormView from '../view/edit-trip-point-form-view.js';
+import EmptyListMessage from '../view/empty-list-message.js';
 import { render } from '../render.js';
 
 export default class TripBoardPresenter {
@@ -22,11 +23,15 @@ export default class TripBoardPresenter {
   }
 
   init() {
-    render(new SortView(), this.#boardContainer);
-    render(this.#tripListComponent, this.#boardContainer);
-    render(new CreateTripPointFormView(), this.#tripListComponent.element);
+    if(this.#points.length) {
+      render(new SortView(), this.#boardContainer);
+      render(this.#tripListComponent, this.#boardContainer);
+      render(new CreateTripPointFormView(), this.#tripListComponent.element);
 
-    this.#points.forEach(this.#renderPoint.bind(this));
+      this.#points.forEach(this.#renderPoint.bind(this));
+    } else {
+      render(new EmptyListMessage(), this.#boardContainer);
+    }
   }
 
   #renderPoint(pointData) {
