@@ -4,7 +4,7 @@ import TripPointView from '../view/trip-point-view.js';
 import CreateTripPointFormView from '../view/create-trip-point-form-view.js';
 import EditTripPointFormView from '../view/edit-trip-point-form-view.js';
 import EmptyListMessage from '../view/empty-list-message.js';
-import { render } from '../render.js';
+import { render, replace } from '../framework/render.js';
 
 export default class TripBoardPresenter {
   #boardContainer;
@@ -36,43 +36,33 @@ export default class TripBoardPresenter {
 
   #renderPoint(pointData) {
     const offers = this.#offers[pointData.type];
-    const point = new TripPointView(pointData, offers);
-    const poinRollupBtnElement = point.element.querySelector('.event__rollup-btn');
 
     const pointEditForm = new EditTripPointFormView(
       pointData,
       this.#offers[pointData.type],
       this.#offersTypes,
-      this.#destinations
+      this.#destinations,
+      closeEditForm
     );
 
-    poinRollupBtnElement.addEventListener('click', (evt) => {
-      evt.preventDefault();
-
-      point.element.replaceWith(pointEditForm.element);
+    const point = new TripPointView(pointData, offers, () => {
+      replace(pointEditForm, point);
       document.addEventListener('keydown', escKeyDownHandler);
     });
 
     function escKeyDownHandler(evt) {
       if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
+
         closeEditForm(evt);
         document.removeEventListener('keydown', escKeyDownHandler);
       }
     }
 
-    const editFormElement = pointEditForm.element.querySelector('.event');
-    const editFormRollupBtnElement = pointEditForm.element.querySelector('.event__rollup-btn');
-
-    function closeEditForm(evt) {
-      evt.preventDefault();
-
-      pointEditForm.element.replaceWith(point.element);
+    function closeEditForm() {
+      replace(point, pointEditForm);
       document.removeEventListener('keydown', escKeyDownHandler);
     }
-
-    editFormElement.addEventListener('submit', closeEditForm);
-    editFormRollupBtnElement.addEventListener('click', closeEditForm);
 
     render(point, this.#tripListComponent.element);
   }

@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 function createCreateTripPointFormTemplate() {
   return (
@@ -167,22 +167,8 @@ function createCreateTripPointFormTemplate() {
   );
 }
 
-export default class CreateTripPointFormView {
-  #element;
-
-  #getTemplate() {
+export default class CreateTripPointFormView extends AbstractView {
+  get template() {
     return createCreateTripPointFormTemplate();
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }

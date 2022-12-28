@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { capitalize, getFormTimeString } from '../utils.js';
 
 function getEventTypeListItemTemplate(offersType) {
@@ -160,21 +160,30 @@ function createEditTripPointFormTemplate(pointData, offersData, offersTypes, des
   );
 }
 
-export default class EditTripPointFormView {
-  #element;
+export default class EditTripPointFormView extends AbstractView {
   #point;
   #offers;
   #offersTypes;
   #destinations;
+  #handleSubmit;
 
-  constructor(point, offers, offersTypes, destinations) {
+  constructor(point, offers, offersTypes, destinations, onFormSubmit) {
+    super();
+
     this.#point = point;
     this.#offers = offers;
     this.#offersTypes = offersTypes;
     this.#destinations = destinations;
+    this.#handleSubmit = onFormSubmit;
+
+    this.element.querySelector('.event')
+      .addEventListener('submit', this.#formSubmit);
+
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#formSubmit);
   }
 
-  #getTemplate() {
+  get template() {
     return createEditTripPointFormTemplate(
       this.#point,
       this.#offers,
@@ -183,15 +192,8 @@ export default class EditTripPointFormView {
     );
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.#getTemplate());
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  #formSubmit = (evt) => {
+    evt.preventDefault();
+    this.#handleSubmit();
+  };
 }
