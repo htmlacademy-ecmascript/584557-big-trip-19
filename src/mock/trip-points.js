@@ -1,41 +1,39 @@
 export const points = [
   {
     'id': '0',
-    'type': 'flight',
-    'date_from': '2022-12-13T13:55:00.360Z',
-    'date_to': '2022-12-13T22:55:50.348Z',
-    'destination': 27,
-    'base_price': 1000,
-    'is_favorite': true,
+    'type': 'train',
+    'date_from': '2023-01-16T17:39:23.922Z',
+    'date_to': '2023-01-16T21:32:07.889Z',
+    'destination': 28,
+    'base_price': 400,
+    'is_favorite': false,
     'offers': [
+      1,
       2,
-      3,
-      5
+      3
     ]
   },
   {
     'id': '1',
-    'type': 'flight',
-    'date_from': '2022-12-13T22:55:50.348Z',
-    'date_to': '2022-12-14T06:25:25.967Z',
-    'destination': 6,
-    'base_price': 900,
+    'type': 'drive',
+    'date_from': '2023-01-16T21:32:07.889Z',
+    'date_to': '2023-01-17T17:32:26.738Z',
+    'destination': 21,
+    'base_price': 600,
     'is_favorite': true,
     'offers': [
       1,
-      2,
-      4,
-      5
+      2
     ]
   },
   {
     'id': '2',
     'type': 'bus',
-    'date_from': '2022-12-14T06:25:25.967Z',
-    'date_to': '2022-12-14T16:37:52.292Z',
-    'destination': 3,
+    'date_from': '2023-01-17T17:32:26.738Z',
+    'date_to': '2023-01-18T12:03:40.450Z',
+    'destination': 6,
     'base_price': 400,
-    'is_favorite': false,
+    'is_favorite': true,
     'offers': [
       1,
       2,
@@ -44,217 +42,145 @@ export const points = [
   },
   {
     'id': '3',
-    'type': 'ship',
-    'date_from': '2022-12-14T16:37:52.292Z',
-    'date_to': '2022-12-15T13:11:52.093Z',
-    'destination': 16,
-    'base_price': 500,
-    'is_favorite': true,
+    'type': 'train',
+    'date_from': '2023-01-18T12:03:40.450Z',
+    'date_to': '2023-01-19T01:58:44.787Z',
+    'destination': 21,
+    'base_price': 1100,
+    'is_favorite': false,
     'offers': [
       1,
-      2
+      2,
+      3
     ]
   },
   {
     'id': '4',
-    'type': 'ship',
-    'date_from': '2022-12-15T13:11:52.093Z',
-    'date_to': '2022-12-15T18:07:23.684Z',
+    'type': 'drive',
+    'date_from': '2023-01-19T01:58:44.787Z',
+    'date_to': '2023-01-19T04:20:19.167Z',
     'destination': 22,
-    'base_price': 300,
+    'base_price': 900,
     'is_favorite': false,
     'offers': [
       1,
-      3,
-      4,
-      5
+      2
     ]
   },
   {
     'id': '5',
     'type': 'ship',
-    'date_from': '2022-12-15T18:07:23.684Z',
-    'date_to': '2022-12-16T15:29:11.245Z',
-    'destination': 9,
-    'base_price': 1100,
-    'is_favorite': false,
+    'date_from': '2023-01-19T04:20:19.167Z',
+    'date_to': '2023-01-19T18:03:20.345Z',
+    'destination': 5,
+    'base_price': 900,
+    'is_favorite': true,
     'offers': [
       2,
-      3
+      4,
+      6
     ]
   },
   {
     'id': '6',
-    'type': 'check-in',
-    'date_from': '2022-12-16T15:29:11.245Z',
-    'date_to': '2022-12-17T11:20:50.158Z',
-    'destination': 5,
-    'base_price': 1100,
+    'type': 'ship',
+    'date_from': '2023-01-19T18:03:20.345Z',
+    'date_to': '2023-01-20T03:13:13.693Z',
+    'destination': 8,
+    'base_price': 800,
     'is_favorite': true,
     'offers': [
       1,
       2,
-      3,
-      4,
-      5
+      3
     ]
   },
   {
     'id': '7',
-    'type': 'bus',
-    'date_from': '2022-12-17T11:20:50.158Z',
-    'date_to': '2022-12-17T22:39:01.307Z',
-    'destination': 11,
-    'base_price': 300,
+    'type': 'flight',
+    'date_from': '2023-01-20T03:13:13.693Z',
+    'date_to': '2023-01-20T17:55:32.588Z',
+    'destination': 3,
+    'base_price': 1100,
     'is_favorite': false,
     'offers': [
-      1,
-      2,
-      3
-    ]
-  },
-  {
-    'id': '8',
-    'type': 'drive',
-    'date_from': '2022-12-17T22:39:01.307Z',
-    'date_to': '2022-12-18T15:39:23.819Z',
-    'destination': 21,
-    'base_price': 600,
-    'is_favorite': false,
-    'offers': [
-      1,
-      2
-    ]
-  },
-  {
-    'id': '9',
-    'type': 'sightseeing',
-    'date_from': '2022-12-18T15:39:23.819Z',
-    'date_to': '2022-12-19T10:07:06.558Z',
-    'destination': 26,
-    'base_price': 300,
-    'is_favorite': true,
-    'offers': []
-  },
-  {
-    'id': '10',
-    'type': 'check-in',
-    'date_from': '2022-12-19T10:07:06.558Z',
-    'date_to': '2022-12-20T00:09:14.631Z',
-    'destination': 22,
-    'base_price': 600,
-    'is_favorite': true,
-    'offers': [
-      1,
       2,
       3,
       4
     ]
   },
   {
-    'id': '11',
-    'type': 'taxi',
-    'date_from': '2022-12-20T00:09:14.631Z',
-    'date_to': '2022-12-20T14:30:34.884Z',
-    'destination': 2,
-    'base_price': 1000,
+    'id': '8',
+    'type': 'sightseeing',
+    'date_from': '2023-01-20T17:55:32.588Z',
+    'date_to': '2023-01-21T03:18:36.679Z',
+    'destination': 13,
+    'base_price': 600,
+    'is_favorite': false,
+    'offers': []
+  },
+  {
+    'id': '9',
+    'type': 'check-in',
+    'date_from': '2023-01-21T03:18:36.679Z',
+    'date_to': '2023-01-21T16:41:06.306Z',
+    'destination': 17,
+    'base_price': 800,
     'is_favorite': true,
     'offers': [
       2,
-      3
-    ]
-  },
-  {
-    'id': '12',
-    'type': 'check-in',
-    'date_from': '2022-12-20T14:30:34.884Z',
-    'date_to': '2022-12-21T01:39:00.658Z',
-    'destination': 27,
-    'base_price': 600,
-    'is_favorite': false,
-    'offers': [
-      1,
-      2,
-      3
-    ]
-  },
-  {
-    'id': '13',
-    'type': 'drive',
-    'date_from': '2022-12-21T01:39:00.658Z',
-    'date_to': '2022-12-21T05:43:30.453Z',
-    'destination': 4,
-    'base_price': 300,
-    'is_favorite': false,
-    'offers': [
-      1,
-      2
-    ]
-  },
-  {
-    'id': '14',
-    'type': 'check-in',
-    'date_from': '2022-12-21T05:43:30.453Z',
-    'date_to': '2022-12-21T17:24:56.428Z',
-    'destination': 10,
-    'base_price': 800,
-    'is_favorite': false,
-    'offers': [
-      1,
-      2,
+      3,
       4,
       5
     ]
   },
   {
-    'id': '15',
-    'type': 'taxi',
-    'date_from': '2022-12-21T17:24:56.428Z',
-    'date_to': '2022-12-22T08:20:23.821Z',
-    'destination': 26,
-    'base_price': 500,
+    'id': '10',
+    'type': 'sightseeing',
+    'date_from': '2023-01-21T16:41:06.306Z',
+    'date_to': '2023-01-21T22:57:38.492Z',
+    'destination': 23,
+    'base_price': 700,
+    'is_favorite': true,
+    'offers': []
+  },
+  {
+    'id': '11',
+    'type': 'check-in',
+    'date_from': '2023-01-21T22:57:38.492Z',
+    'date_to': '2023-01-22T07:18:43.738Z',
+    'destination': 15,
+    'base_price': 300,
     'is_favorite': false,
     'offers': [
       1,
       2,
+      3,
+      4,
       5
     ]
   },
   {
-    'id': '16',
-    'type': 'restaurant',
-    'date_from': '2022-12-22T08:20:23.821Z',
-    'date_to': '2022-12-22T15:26:57.148Z',
-    'destination': 8,
-    'base_price': 400,
-    'is_favorite': false,
-    'offers': [
-      1,
-      2
-    ]
-  },
-  {
-    'id': '17',
-    'type': 'check-in',
-    'date_from': '2022-12-22T15:26:57.148Z',
-    'date_to': '2022-12-22T23:00:57.333Z',
-    'destination': 24,
+    'id': '12',
+    'type': 'flight',
+    'date_from': '2023-01-22T07:18:43.738Z',
+    'date_to': '2023-01-22T11:12:13.566Z',
+    'destination': 15,
     'base_price': 1100,
     'is_favorite': true,
     'offers': [
-      2,
       3,
-      4
+      5
     ]
   },
   {
-    'id': '18',
-    'type': 'bus',
-    'date_from': '2022-12-22T23:00:57.333Z',
-    'date_to': '2022-12-23T02:41:40.547Z',
-    'destination': 7,
-    'base_price': 700,
-    'is_favorite': false,
+    'id': '13',
+    'type': 'train',
+    'date_from': '2023-01-22T11:12:13.566Z',
+    'date_to': '2023-01-23T05:45:05.325Z',
+    'destination': 16,
+    'base_price': 1000,
+    'is_favorite': true,
     'offers': [
       1,
       2,
@@ -262,16 +188,80 @@ export const points = [
     ]
   },
   {
-    'id': '19',
-    'type': 'drive',
-    'date_from': '2022-12-23T02:41:40.547Z',
-    'date_to': '2022-12-23T20:13:40.068Z',
-    'destination': 23,
-    'base_price': 500,
-    'is_favorite': true,
+    'id': '14',
+    'type': 'restaurant',
+    'date_from': '2023-01-23T05:45:05.325Z',
+    'date_to': '2023-01-24T00:12:58.442Z',
+    'destination': 11,
+    'base_price': 700,
+    'is_favorite': false,
     'offers': [
       1,
       2
+    ]
+  },
+  {
+    'id': '15',
+    'type': 'flight',
+    'date_from': '2023-01-24T00:12:58.442Z',
+    'date_to': '2023-01-24T10:07:28.742Z',
+    'destination': 4,
+    'base_price': 300,
+    'is_favorite': true,
+    'offers': [
+      2,
+      4,
+      6
+    ]
+  },
+  {
+    'id': '16',
+    'type': 'sightseeing',
+    'date_from': '2023-01-24T10:07:28.742Z',
+    'date_to': '2023-01-25T09:06:14.841Z',
+    'destination': 2,
+    'base_price': 1000,
+    'is_favorite': false,
+    'offers': []
+  },
+  {
+    'id': '17',
+    'type': 'ship',
+    'date_from': '2023-01-25T09:06:14.841Z',
+    'date_to': '2023-01-26T00:47:22.822Z',
+    'destination': 15,
+    'base_price': 700,
+    'is_favorite': true,
+    'offers': [
+      1,
+      2,
+      5
+    ]
+  },
+  {
+    'id': '18',
+    'type': 'ship',
+    'date_from': '2023-01-26T00:47:22.822Z',
+    'date_to': '2023-01-26T14:33:32.900Z',
+    'destination': 16,
+    'base_price': 1000,
+    'is_favorite': false,
+    'offers': [
+      2
+    ]
+  },
+  {
+    'id': '19',
+    'type': 'taxi',
+    'date_from': '2023-01-26T14:33:32.900Z',
+    'date_to': '2023-01-27T00:14:39.999Z',
+    'destination': 10,
+    'base_price': 700,
+    'is_favorite': true,
+    'offers': [
+      1,
+      3,
+      5
     ]
   }
 ];

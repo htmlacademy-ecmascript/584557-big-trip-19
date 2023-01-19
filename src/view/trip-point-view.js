@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { getTimeDiffString, getEventDateString, getEventTimeString } from '../utils.js';
+import { getTimeDiffString, getEventDateString, getEventTimeString } from '../utils/date.js';
 
 function createTripPointOffersListTemplate(offersData, offersIds) {
   const offersItems = offersIds.map(

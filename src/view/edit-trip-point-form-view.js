@@ -1,5 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { capitalize, getFormTimeString } from '../utils.js';
+import { capitalize } from '../utils/string.js';
+import { getFormTimeString } from '../utils/date.js';
 
 function getEventTypeListItemTemplate(offersType) {
   return (
