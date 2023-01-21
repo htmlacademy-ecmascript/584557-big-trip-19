@@ -5,6 +5,7 @@ import CreateTripPointFormView from '../view/create-trip-point-form-view.js';
 import EditTripPointFormView from '../view/edit-trip-point-form-view.js';
 import EmptyListMessage from '../view/empty-list-message.js';
 import { render, replace } from '../framework/render.js';
+import { sortings } from '../utils/sort.js';
 
 export default class TripBoardPresenter {
   #boardContainer;
@@ -24,7 +25,7 @@ export default class TripBoardPresenter {
 
   init() {
     if(this.#points.length) {
-      render(new SortView(), this.#boardContainer);
+      render(new SortView(sortings), this.#boardContainer);
       render(this.#tripListComponent, this.#boardContainer);
       render(new CreateTripPointFormView(), this.#tripListComponent.element);
 
