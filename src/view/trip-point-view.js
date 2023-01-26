@@ -5,7 +5,7 @@ function createTripPointOffersListTemplate(offersData, offersIds) {
   const offersItems = offersIds.map(
     (offerId) => {
       const offerData = offersData.find(({id}) => id === offerId);
-      const {title, price} = offerData;
+      const { title, price } = offerData;
 
       return `<li class="event__offer">
         <span class="event__offer-title">${title}</span>
@@ -24,11 +24,11 @@ function createTripPointOffersListTemplate(offersData, offersIds) {
 
 function createTripPointTemplate(pointData, offersData) {
   const {
-    base_price: price,
-    date_from: dateFrom,
-    date_to: dateTo,
+    basePrice,
+    dateFrom,
+    dateTo,
     destination,
-    is_favorite: isFavorite,
+    isFavorite,
     offers,
     type
   } = pointData;
@@ -59,7 +59,7 @@ function createTripPointTemplate(pointData, offersData) {
           <p class="event__duration">${duration}</p>
         </div>
         <p class="event__price">
-          &euro;&nbsp;<span class="event__price-value">${price}</span>
+          &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         ${offersListTemplate}
@@ -82,16 +82,20 @@ export default class TripPointView extends AbstractView {
   #point;
   #offers;
   #handleEditClick;
+  #handleFavoriteClick;
 
-  constructor(point, offers, onRollupClick) {
+  constructor(point, offers, onRollupClick, onFavoriteClick) {
     super();
 
     this.#point = point;
     this.#offers = offers;
     this.#handleEditClick = onRollupClick;
+    this.#handleFavoriteClick = onFavoriteClick;
 
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#rollupClickHandler);
+    this.element.querySelector('.event__favorite-btn')
+      .addEventListener('click', this.#favoriteClickHandler);
   }
 
   get template() {
@@ -101,5 +105,10 @@ export default class TripPointView extends AbstractView {
   #rollupClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleEditClick();
+  };
+
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFavoriteClick();
   };
 }
