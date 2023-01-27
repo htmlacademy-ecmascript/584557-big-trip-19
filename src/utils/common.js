@@ -1,6 +1,6 @@
 import { toCamelCase } from './string.js';
 
-function updateItem(items, update) {
+function updateItemByID(items, update) {
   return items.map((item) => item.id === update.id ? update : item);
 }
 
@@ -25,4 +25,4 @@ const keysToCamel = function (obj) {
   return obj;
 };
 
-export { updateItem, keysToCamel };
+export { updateItemByID, keysToCamel };

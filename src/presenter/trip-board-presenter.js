@@ -5,7 +5,7 @@ import CreateTripPointFormView from '../view/create-trip-point-form-view.js';
 import EmptyListMessage from '../view/empty-list-message.js';
 import { render } from '../framework/render.js';
 import { sortings } from '../utils/sort.js';
-import { updateItem } from '../utils/common.js';
+import { updateItemByID } from '../utils/common.js';
 
 export default class TripBoardPresenter {
   #boardContainer;
@@ -53,8 +53,8 @@ export default class TripBoardPresenter {
   }
 
   #handleTaskChange = (updatedPoint) => {
-    this.#points = updateItem(this.#points, updatedPoint);
-    this.#sourcedPoints = updateItem(this.#sourcedPoints, updatedPoint);
+    this.#points = updateItemByID(this.#points, updatedPoint);
+    this.#sourcedPoints = updateItemByID(this.#sourcedPoints, updatedPoint);
     this.#pointsPresenters.get(updatedPoint.id).init(updatedPoint);
   };
 
