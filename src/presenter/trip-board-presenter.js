@@ -1,23 +1,26 @@
 import SortView from '../view/sort-view.js';
 import TripListView from '../view/trip-list-view.js';
-import TripPointView from '../view/trip-point-view.js';
+import TripPointPresenter from './trip-point-presenter.js';
 import CreateTripPointFormView from '../view/create-trip-point-form-view.js';
-import EditTripPointFormView from '../view/edit-trip-point-form-view.js';
 import EmptyListMessage from '../view/empty-list-message.js';
-import { render, replace } from '../framework/render.js';
+import { render } from '../framework/render.js';
 import { sortings } from '../utils/sort.js';
+import { updateItemByID } from '../utils/common.js';
 
 export default class TripBoardPresenter {
   #boardContainer;
   #points;
+  #sourcedPoints;
   #offers;
   #offersTypes;
   #destinations;
   #tripListComponent = new TripListView();
+  #pointsPresenters = new Map();
 
   constructor({ boardContainer, pointsModel, offersModel, destinationsModel }) {
     this.#boardContainer = boardContainer;
     this.#points = [...pointsModel.points];
+    this.#sourcedPoints = [...pointsModel.points];
     this.#offers = {...offersModel.offers};
     this.#offersTypes = [...offersModel.offersTypes];
     this.#destinations = [...destinationsModel.destinations];
@@ -36,35 +39,26 @@ export default class TripBoardPresenter {
   }
 
   #renderPoint(pointData) {
-    const offers = this.#offers[pointData.type];
-
-    const pointEditForm = new EditTripPointFormView(
-      pointData,
-      this.#offers[pointData.type],
-      this.#offersTypes,
-      this.#destinations,
-      closeEditForm
-    );
-
-    const point = new TripPointView(pointData, offers, () => {
-      replace(pointEditForm, point);
-      document.addEventListener('keydown', escKeyDownHandler);
+    const pointPresenter = new TripPointPresenter({
+      offers: this.#offers,
+      offersTypes: this.#offersTypes,
+      destinations: this.#destinations,
+      tripListComponent: this.#tripListComponent.element,
+      onDataChange: this.#handleTaskChange,
+      onModeChange: this.#handleModeChange
     });
+    pointPresenter.init(pointData);
 
-    function escKeyDownHandler(evt) {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-
-        closeEditForm(evt);
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    }
-
-    function closeEditForm() {
-      replace(point, pointEditForm);
-      document.removeEventListener('keydown', escKeyDownHandler);
-    }
-
-    render(point, this.#tripListComponent.element);
+    this.#pointsPresenters.set(pointData.id, pointPresenter);
   }
+
+  #handleTaskChange = (updatedPoint) => {
+    this.#points = updateItemByID(this.#points, updatedPoint);
+    this.#sourcedPoints = updateItemByID(this.#sourcedPoints, updatedPoint);
+    this.#pointsPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
+
+  #handleModeChange = () => {
+    this.#pointsPresenters.forEach((presenter) => presenter.resetView());
+  };
 }

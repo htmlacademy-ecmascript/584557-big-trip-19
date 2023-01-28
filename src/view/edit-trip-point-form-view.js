@@ -79,9 +79,9 @@ function getEventPhotoTemplate({src, description}) {
 
 function createEditTripPointFormTemplate(pointData, offersData, offersTypes, destinations) {
   const {
-    base_price: price,
-    date_from: dateFrom,
-    date_to: dateTo,
+    basePrice,
+    dateFrom,
+    dateTo,
     destination,
     offers,
     type
@@ -133,7 +133,7 @@ function createEditTripPointFormTemplate(pointData, offersData, offersTypes, des
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
