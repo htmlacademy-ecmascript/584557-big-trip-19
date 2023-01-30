@@ -4,7 +4,7 @@ import { capitalize } from '../utils/string.js';
 function createSortingItemTemplate(sortingName, isEnabled, checked) {
   return (
     `<div class="trip-sort__item  trip-sort__item--${sortingName}">
-      <input id="sort-${sortingName}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${sortingName}" ${isEnabled ? '' : 'disabled'} ${checked ? 'checked' : ''}>
+      <input id="sort-${sortingName}" class="trip-sort__input js-sort-input visually-hidden" type="radio" name="trip-sort" value="${sortingName}" ${isEnabled ? '' : 'disabled'} ${checked ? 'checked' : ''}>
       <label class="trip-sort__btn" for="sort-${sortingName}">${capitalize(sortingName)}</label>
     </div>`
   );
@@ -24,14 +24,25 @@ function createSortingTemplate(sortings) {
 
 export default class SortView extends AbstractView {
   #sortings = null;
+  #handleSortTypeChange = null;
 
-  constructor(sortings) {
+  constructor({sortings, onSortTypeChange}) {
     super();
 
     this.#sortings = sortings;
+    this.#handleSortTypeChange = onSortTypeChange;
+
+    [...this.element.querySelectorAll('.js-sort-input')].forEach((sortInput) => {
+      sortInput.addEventListener('change', this.#sortTypeChangeHandler);
+    });
   }
 
   get template() {
     return createSortingTemplate(this.#sortings);
   }
+
+  #sortTypeChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleSortTypeChange(evt.target.value);
+  };
 }
