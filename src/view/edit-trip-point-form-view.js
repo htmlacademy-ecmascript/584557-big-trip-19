@@ -1,12 +1,12 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { capitalize } from '../utils/string.js';
 import { getFormTimeString } from '../utils/date.js';
 
-function getEventTypeListItemTemplate(offersType) {
+function getEventTypeListItemTemplate(offersType, idx) {
   return (
     `<div class="event__type-item">
-      <input id="event-type-${offersType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${offersType}">
-      <label class="event__type-label  event__type-label--${offersType}" for="event-type-${offersType}-1">${capitalize(offersType)}</label>
+      <input id="event-type-${offersType}-${idx}" class="event__type-input visually-hidden" type="radio" name="event-type" value="${offersType}">
+      <label class="event__type-label  event__type-label--${offersType}" for="event-type-${offersType}-${idx}">${capitalize(offersType)}</label>
     </div>`
   );
 }
@@ -51,6 +51,7 @@ function getAvailableOfferTemplate(offersData, isActive) {
 }
 
 function getAvailableOffersTemplate(offersData, pointActiveOffers) {
+
   return (
     `<div class="event__available-offers">
       ${offersData.map((offerData) => {
@@ -77,25 +78,25 @@ function getEventPhotoTemplate({src, description}) {
   return (`<img class="event__photo" src="${src}" alt="${description}">`);
 }
 
-function createEditTripPointFormTemplate(pointData, offersData, offersTypes, destinations) {
+function createEditTripPointFormTemplate(pointData, allOffers, destinations) {
   const {
     basePrice,
     dateFrom,
     dateTo,
-    destination,
+    activeDestination,
     offers,
     type
   } = pointData;
 
-  const activeDestination = destinations.find(({id}) => id === destination);
   const { name, description, pictures } = activeDestination;
 
   const eventTimeStart = getFormTimeString(dateFrom);
   const eventTimeEnd = getFormTimeString(dateTo);
+  const offersByCurrentPointType = allOffers[type];
 
-  const offersTypesListTemplate = getEventTypeListTemplate(offersTypes);
+  const offersTypesListTemplate = getEventTypeListTemplate(Object.keys(allOffers));
   const destinationsDataListTemplate = getEventDestinationsDataListTemplate(destinations);
-  const availableOffersTemplate = getAvailableOffersTemplate(offersData, offers);
+  const availableOffersTemplate = getAvailableOffersTemplate(offersByCurrentPointType, offers);
   const eventPhotosTemplate = getEventPhotosTemplate(pictures);
 
   return (
@@ -143,58 +144,107 @@ function createEditTripPointFormTemplate(pointData, offersData, offersTypes, des
           </button>
         </header>
         <section class="event__details">
-          <section class="event__section  event__section--offers">
+          ${offersByCurrentPointType.length ? `<section class="event__section  event__section--offers">
             <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
             ${availableOffersTemplate}
-          </section>
+          </section>` : ''}
 
-          <section class="event__section  event__section--destination">
+         ${activeDestination ? `<section class="event__section  event__section--destination">
             <h3 class="event__section-title  event__section-title--destination">Destination</h3>
             <p class="event__destination-description">${description}</p>
 
             ${eventPhotosTemplate}
-          </section>
+          </section>` : ''}
         </section>
       </form>
     </li>`
   );
 }
 
-export default class EditTripPointFormView extends AbstractView {
-  #point;
-  #offers;
-  #offersTypes;
+export default class EditTripPointFormView extends AbstractStatefulView {
+  #allOffers;
   #destinations;
   #handleSubmit;
 
-  constructor(point, offers, offersTypes, destinations, onFormSubmit) {
+  constructor({ point, allOffers, destinations, onFormSubmit }) {
     super();
 
-    this.#point = point;
-    this.#offers = offers;
-    this.#offersTypes = offersTypes;
+    this.#allOffers = allOffers;
     this.#destinations = destinations;
     this.#handleSubmit = onFormSubmit;
 
+    this._setState(this.parsePointToState(point));
+
+    this._restoreHandlers();
+  }
+
+  get template() {
+    return createEditTripPointFormTemplate(
+      this._state,
+      this.#allOffers,
+      this.#destinations
+    );
+  }
+
+  _restoreHandlers() {
     this.element.querySelector('.event')
       .addEventListener('submit', this.#formSubmit);
 
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#formSubmit);
-  }
 
-  get template() {
-    return createEditTripPointFormTemplate(
-      this.#point,
-      this.#offers,
-      this.#offersTypes,
-      this.#destinations
-    );
+    this.element.querySelector('.event__input--destination')
+      .addEventListener('change', this.#pointDestinationChangeHandler);
+
+    [...this.element.querySelectorAll('.event__type-input')].forEach((typeInputElement) => {
+      typeInputElement.addEventListener('change', this.#pointTypeChangeHandler);
+    });
   }
 
   #formSubmit = (evt) => {
     evt.preventDefault();
-    this.#handleSubmit();
+    this.#handleSubmit(this.parseStateToPoint(this._state));
   };
+
+  #pointTypeChangeHandler = (evt) => {
+    evt.preventDefault();
+
+    const newType = evt.target.value;
+    if(this._state.type !== newType) {
+      this.updateElement({
+        type: evt.target.value,
+        offers: []
+      });
+    }
+  };
+
+  #pointDestinationChangeHandler = (evt) => {
+    evt.preventDefault();
+
+    const newDestinationName = evt.target.value;
+    const newDestination = this.#destinations.find(({ name }) => name === newDestinationName);
+
+    this.updateElement({
+      destination: newDestination.id,
+      activeDestination: newDestination
+    });
+  };
+
+  parsePointToState(point) {
+    return {
+      ...point,
+      activeDestination: this.#destinations.find(({id}) => id === point.destination)
+    };
+  }
+
+  parseStateToPoint(state) {
+    const point = { ...state };
+
+    delete point.activeDestination;
+
+    return {
+      ...point
+    };
+  }
 }

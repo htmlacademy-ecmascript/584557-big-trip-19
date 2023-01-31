@@ -1,7 +1,6 @@
 import SortView from '../view/sort-view.js';
 import TripListView from '../view/trip-list-view.js';
 import TripPointPresenter from './trip-point-presenter.js';
-import CreateTripPointFormView from '../view/create-trip-point-form-view.js';
 import EmptyListMessage from '../view/empty-list-message.js';
 import { render } from '../framework/render.js';
 import { sortings } from '../utils/sort.js';
@@ -13,7 +12,6 @@ export default class TripBoardPresenter {
   #points;
   #sourcedPoints;
   #offers;
-  #offersTypes;
   #destinations;
 
   #tripListComponent = new TripListView();
@@ -27,7 +25,6 @@ export default class TripBoardPresenter {
     this.#points = [...pointsModel.points];
     this.#sourcedPoints = [...pointsModel.points];
     this.#offers = {...offersModel.offers};
-    this.#offersTypes = [...offersModel.offersTypes];
     this.#destinations = [...destinationsModel.destinations];
   }
 
@@ -35,7 +32,7 @@ export default class TripBoardPresenter {
     if(this.#points.length) {
       this.#renderSort();
       render(this.#tripListComponent, this.#boardContainer);
-      render(new CreateTripPointFormView(), this.#tripListComponent.element);
+      // render(new CreateTripPointFormView(this.#offers, this.#destinations), this.#tripListComponent.element);
 
       this.#points.forEach(this.#renderPoint.bind(this));
     } else {
@@ -46,7 +43,6 @@ export default class TripBoardPresenter {
   #renderPoint(pointData) {
     const pointPresenter = new TripPointPresenter({
       offers: this.#offers,
-      offersTypes: this.#offersTypes,
       destinations: this.#destinations,
       tripListComponent: this.#tripListComponent.element,
       onDataChange: this.#handleTaskChange,

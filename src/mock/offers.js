@@ -205,4 +205,3 @@ export const offers = [
   }
 ];
 
-export const offersTypes = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];

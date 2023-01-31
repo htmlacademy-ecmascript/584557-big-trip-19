@@ -1,4 +1,4 @@
-import { offers, offersTypes } from '../mock/offers.js';
+import { offers } from '../mock/offers.js';
 
 export default class OffersModel {
   #offers = offers.reduce((acc, offer) => {
@@ -7,15 +7,7 @@ export default class OffersModel {
     return acc;
   }, {});
 
-  #offersTypes = offersTypes;
-
   get offers() {
     return this.#offers;
   }
-
-  get offersTypes() {
-    return this.#offersTypes;
-  }
-
-
 }
