@@ -58,11 +58,16 @@ function isFuturePointTime(pointStartDate) {
   return dayjs().isBefore(pointStartDate, 'D');
 }
 
+function isDatesEqual(dateA, dateB) {
+  return (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+}
+
 export {getTimeDiffString,
   getEventDateString,
   getEventTimeString,
   getFormTimeString,
   isFuturePointTime,
   isPastPointTime,
-  isPresentPointTime
+  isPresentPointTime,
+  isDatesEqual
 };

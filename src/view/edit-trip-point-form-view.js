@@ -51,7 +51,6 @@ function getAvailableOfferTemplate(offersData, isActive) {
 }
 
 function getAvailableOffersTemplate(offersData, pointActiveOffers) {
-
   return (
     `<div class="event__available-offers">
       ${offersData.map((offerData) => {
@@ -99,6 +98,8 @@ function createEditTripPointFormTemplate(pointData, allOffers, destinations) {
   const availableOffersTemplate = getAvailableOffersTemplate(offersByCurrentPointType, offers);
   const eventPhotosTemplate = getEventPhotosTemplate(pictures);
 
+  const allowsDestinationsNames = destinations.map((destination) => destination.name);
+
   return (
     `<li class="trip-events__item">
       <form class="event event--edit" action="#" method="post">
@@ -117,7 +118,15 @@ function createEditTripPointFormTemplate(pointData, allOffers, destinations) {
             <label class="event__label  event__type-output" for="event-destination-1">
               ${type}
             </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+             <input
+              class="event__input  event__input--destination"
+              id="event-destination"
+              type="text"
+              name="event-destination" value="${name || ''}"
+              list="destination-list"
+              aoutocmplete="off"
+              pattern="^(${allowsDestinationsNames.join('|')})$"
+            >
             ${destinationsDataListTemplate}
           </div>
 
@@ -134,7 +143,7 @@ function createEditTripPointFormTemplate(pointData, allOffers, destinations) {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+            <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${basePrice}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -166,13 +175,15 @@ export default class EditTripPointFormView extends AbstractStatefulView {
   #allOffers;
   #destinations;
   #handleSubmit;
+  #handleDeleteClick;
 
-  constructor({ point, allOffers, destinations, onFormSubmit }) {
+  constructor({ point, allOffers, destinations, onFormSubmit, onFormReset }) {
     super();
 
     this.#allOffers = allOffers;
     this.#destinations = destinations;
     this.#handleSubmit = onFormSubmit;
+    this.#handleDeleteClick = onFormReset;
 
     this._setState(this.parsePointToState(point));
 
@@ -189,22 +200,30 @@ export default class EditTripPointFormView extends AbstractStatefulView {
 
   _restoreHandlers() {
     this.element.querySelector('.event')
-      .addEventListener('submit', this.#formSubmit);
+      .addEventListener('submit', this.#formSubmitHandler);
+
+    this.element.querySelector('.event')
+      .addEventListener('reset', this.#formDeleteClickHandler);
 
     this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#formSubmit);
+      .addEventListener('click', this.#formSubmitHandler);
 
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#pointDestinationChangeHandler);
 
-    [...this.element.querySelectorAll('.event__type-input')].forEach((typeInputElement) => {
+    this.element.querySelectorAll('.event__type-input').forEach((typeInputElement) => {
       typeInputElement.addEventListener('change', this.#pointTypeChangeHandler);
     });
   }
 
-  #formSubmit = (evt) => {
+  #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this.#handleSubmit(this.parseStateToPoint(this._state));
+  };
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(this.parseStateToPoint(this._state));
   };
 
   #pointTypeChangeHandler = (evt) => {
@@ -224,7 +243,6 @@ export default class EditTripPointFormView extends AbstractStatefulView {
 
     const newDestinationName = evt.target.value;
     const newDestination = this.#destinations.find(({ name }) => name === newDestinationName);
-
     this.updateElement({
       destination: newDestination.id,
       activeDestination: newDestination
