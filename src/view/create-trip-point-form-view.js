@@ -1,3 +1,4 @@
+import he from 'he';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { capitalize } from '../utils/string.js';
 import { getFormTimeString } from '../utils/date.js';
@@ -94,7 +95,7 @@ function createCreateTripPointFormTemplate(state, allOffers, destinations) {
 
   let name, description, pictures;
   if(activeDestination) {
-    name = activeDestination.name;
+    name = he.encode(activeDestination.name);
     description = activeDestination.description;
     pictures = activeDestination.pictures;
   }
@@ -103,6 +104,8 @@ function createCreateTripPointFormTemplate(state, allOffers, destinations) {
   const destinationsDataListTemplate = getEventDestinationsDataListTemplate(destinations);
   const availableOffersTemplate = getAvailableOffersTemplate(offersByCurrentPointType, offers);
   const eventPhotosTemplate = getEventPhotosTemplate(pictures || []);
+
+  const allowsDestinationsNames = destinations.map((destination) => destination.name);
 
   return (
     `<li class="trip-events__item">
@@ -122,7 +125,15 @@ function createCreateTripPointFormTemplate(state, allOffers, destinations) {
             <label class="event__label  event__type-output" for="event-destination">
               ${type}
             </label>
-            <input class="event__input  event__input--destination" id="event-destination" type="text" name="event-destination" value="${name || ''}" list="destination-list">
+            <input
+              class="event__input  event__input--destination"
+              id="event-destination"
+              type="text"
+              name="event-destination" value="${name || ''}"
+              list="destination-list"
+              aoutocmplete="off"
+              pattern="^(${allowsDestinationsNames.join('|')})$"
+            >
             ${destinationsDataListTemplate}
           </div>
 
@@ -139,7 +150,7 @@ function createCreateTripPointFormTemplate(state, allOffers, destinations) {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price" type="text" name="event-price" value="${basePrice || 0}">
+            <input class="event__input  event__input--price" id="event-price" type="number" name="event-price" value="${basePrice || 0}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -167,12 +178,16 @@ function createCreateTripPointFormTemplate(state, allOffers, destinations) {
 export default class CreateTripPointFormView extends AbstractStatefulView {
   #allOffers;
   #destinations;
+  #handleFormSubmit;
+  #handleFormReset;
 
-  constructor(allOffers, destinations,) {
+  constructor({ allOffers, destinations, onFormSubmit, onFormReset }) {
     super();
 
     this.#allOffers = allOffers;
     this.#destinations = destinations;
+    this.#handleFormSubmit = onFormSubmit;
+    this.#handleFormReset = onFormReset;
 
     const initState = {
       type: 'taxi',
@@ -199,22 +214,29 @@ export default class CreateTripPointFormView extends AbstractStatefulView {
 
   _restoreHandlers() {
     this.element.querySelector('.event')
-      .addEventListener('submit', this.#formSubmit);
+      .addEventListener('submit', this.#formSubmitHandler);
 
-    this.element.querySelector('.event__reset-btn')
-      .addEventListener('click', this.#formSubmit);
+    this.element.querySelector('.event')
+      .addEventListener('reset', this.#formResetHandler);
 
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#pointDestinationChangeHandler);
 
-    [...this.element.querySelectorAll('.event__type-input')].forEach((typeInputElement) => {
+    this.element.querySelectorAll('.event__type-input').forEach((typeInputElement) => {
       typeInputElement.addEventListener('change', this.#pointTypeChangeHandler);
     });
   }
 
-  #formSubmit = (evt) => {
+  #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    // this.#handleSubmit(this.parseStateToPoint(this._state));
+
+    this.#handleFormSubmit(this.parseStateToPoint(this._state));
+  };
+
+  #formResetHandler = (evt) => {
+    evt.preventDefault();
+
+    this.#handleFormReset();
   };
 
   #pointTypeChangeHandler = (evt) => {

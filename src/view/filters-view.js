@@ -1,18 +1,16 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { capitalize } from '../utils/string.js';
 
-function createFiltersItemTemplate(filterName, isChecked) {
+function createFiltersItemTemplate({ name, type }, currentFilterType) {
   return (
     `<div class="trip-filters__filter">
-      <input id="filter-${filterName}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${filterName}" ${isChecked ? 'hecked' : ''}>
-      <label class="trip-filters__filter-label" for="filter-${filterName}">${capitalize(filterName)}</label>
+      <input id="filter-${type}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${type}" ${currentFilterType === type ? 'checked' : ''}>
+      <label class="trip-filters__filter-label" for="filter-${type}">${name}</label>
     </div>`
   );
 }
 
-function createFiltersTemplate(filters) {
-  const filtersItemTemplate = Object.keys(filters)
-    .map((filterName, idx) => createFiltersItemTemplate(filterName, idx === 0))
+function createFiltersTemplate(filters, currentFilterType) {
+  const filtersItemTemplate = filters.map((filter) => createFiltersItemTemplate(filter, currentFilterType))
     .join('');
 
   return (
@@ -26,14 +24,27 @@ function createFiltersTemplate(filters) {
 
 export default class FiltersView extends AbstractView {
   #filters = null;
+  #currentFilterType = null;
+  #handleFilterTypeChange = null;
 
-  constructor(filters) {
+  constructor({filters, currentFilterType, onFilterTypeChange}) {
     super();
 
     this.#filters = filters;
+    this.#currentFilterType = currentFilterType;
+    this.#handleFilterTypeChange = onFilterTypeChange;
+
+    this.element.querySelectorAll('.trip-filters__filter-input').forEach((filterInputElement) => {
+      filterInputElement.addEventListener('change', this.#filterTypeChangeHandler);
+    });
   }
 
   get template() {
-    return createFiltersTemplate(this.#filters);
+    return createFiltersTemplate(this.#filters, this.#currentFilterType);
   }
+
+  #filterTypeChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFilterTypeChange(evt.target.value);
+  };
 }

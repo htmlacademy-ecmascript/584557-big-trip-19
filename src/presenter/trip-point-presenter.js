@@ -1,6 +1,8 @@
 import { render, replace, remove } from '../framework/render.js';
 import TripPointView from '../view/trip-point-view.js';
 import EditTripPointFormView from '../view/edit-trip-point-form-view.js';
+import { UserAction, UpdateType } from '../constants.js';
+import { isDatesEqual } from '../utils/date.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -35,8 +37,11 @@ export default class TripPointPresenter {
     const prevPointEditComponent = this.#tripPointEditComponent;
 
     const pointOffers = this.#offers[point.type];
+    const pointDestinationName = this.#destinations.find(({ id }) => id === point.destination).name;
+
     this.#tripPointComponent = new TripPointView(
       this.#point,
+      pointDestinationName,
       pointOffers,
       this.#handleEditClick,
       this.#handleFavoriteClick
@@ -45,7 +50,8 @@ export default class TripPointPresenter {
       point,
       allOffers: this.#offers,
       destinations: this.#destinations,
-      onFormSubmit: this.#replaceFormToCard
+      onFormSubmit: this.#handleFormSubmit,
+      onFormReset: this.#handleFromReset
     });
 
     if (prevTripPointComponent === null || prevPointEditComponent === null) {
@@ -101,11 +107,33 @@ export default class TripPointPresenter {
   };
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.PATCH,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
   };
 
-  #handleFormSubmit = (point) => {
-    this.#handleDataChange(point);
+  #handleFormSubmit = (update) => {
+    const isMinorUpdate =
+      !isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
+      !isDatesEqual(this.#point.dateTo, update.dateTo) ||
+      this.#point.basePrice !== update.basePrice;
+
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      update,
+    );
+
     this.#replaceFormToCard();
+  };
+
+  #handleFromReset = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
   };
 }

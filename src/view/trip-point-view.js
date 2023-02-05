@@ -22,12 +22,11 @@ function createTripPointOffersListTemplate(offersData, offersIds) {
   );
 }
 
-function createTripPointTemplate(pointData, offersData) {
+function createTripPointTemplate(pointData, pointDestinationName ,offersData) {
   const {
     basePrice,
     dateFrom,
     dateTo,
-    destination,
     isFavorite,
     offers,
     type
@@ -49,7 +48,7 @@ function createTripPointTemplate(pointData, offersData) {
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${type} ${destination}</h3>
+        <h3 class="event__title">${type} ${pointDestinationName}</h3>
         <div class="event__schedule">
           <p class="event__time">
             <time class="event__start-time" datetime="${dateFrom}">${eventStartTime}</time>
@@ -80,14 +79,16 @@ function createTripPointTemplate(pointData, offersData) {
 
 export default class TripPointView extends AbstractView {
   #point;
+  #pointdestinationName;
   #offers;
   #handleEditClick;
   #handleFavoriteClick;
 
-  constructor(point, offers, onRollupClick, onFavoriteClick) {
+  constructor(point, pointdestinationName, offers, onRollupClick, onFavoriteClick) {
     super();
 
     this.#point = point;
+    this.#pointdestinationName = pointdestinationName;
     this.#offers = offers;
     this.#handleEditClick = onRollupClick;
     this.#handleFavoriteClick = onFavoriteClick;
@@ -99,7 +100,7 @@ export default class TripPointView extends AbstractView {
   }
 
   get template() {
-    return createTripPointTemplate(this.#point, this.#offers);
+    return createTripPointTemplate(this.#point, this.#pointdestinationName ,this.#offers);
   }
 
   #rollupClickHandler = (evt) => {
