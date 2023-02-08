@@ -190,6 +190,7 @@ function createEditTripPointFormTemplate(pointData, allOffers, destinations) {
 }
 
 export default class EditTripPointFormView extends AbstractStatefulView {
+  #point;
   #allOffers;
   #destinations;
   #handleSubmit;
@@ -200,13 +201,14 @@ export default class EditTripPointFormView extends AbstractStatefulView {
   constructor({ point, allOffers, destinations, onFormSubmit, onFormReset, onRollupBtnClick }) {
     super();
 
+    this.#point = point;
     this.#allOffers = allOffers;
     this.#destinations = destinations;
     this.#handleSubmit = onFormSubmit;
     this.#handleDeleteClick = onFormReset;
     this.#handleRollupBtnClick = onRollupBtnClick;
 
-    this._setState(this.parsePointToState(point));
+    this._setState(this.parsePointToState(this.#point));
 
     this._restoreHandlers();
   }
@@ -269,6 +271,11 @@ export default class EditTripPointFormView extends AbstractStatefulView {
 
   #rollupBtnClickHandler = (evt) => {
     evt.preventDefault();
+
+    this.updateElement({
+      ...this.parsePointToState(this.#point)
+    });
+
     this.#handleRollupBtnClick();
   };
 
