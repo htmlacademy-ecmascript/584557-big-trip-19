@@ -51,7 +51,8 @@ export default class TripPointPresenter {
       allOffers: this.#offers,
       destinations: this.#destinations,
       onFormSubmit: this.#handleFormSubmit,
-      onFormReset: this.#handleFromReset
+      onFormReset: this.#handleFromReset,
+      onRollupBtnClick: this.#replaceFormToCard
     });
 
     if (prevTripPointComponent === null || prevPointEditComponent === null) {
@@ -64,7 +65,8 @@ export default class TripPointPresenter {
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#tripPointEditComponent, prevPointEditComponent);
+      replace(this.#tripPointComponent, prevPointEditComponent);
+      this.#mode = Mode.DEFAULT;
     }
 
     remove(prevTripPointComponent);
@@ -80,6 +82,41 @@ export default class TripPointPresenter {
     if (this.#mode !== Mode.DEFAULT) {
       this.#replaceFormToCard();
     }
+  }
+
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#tripPointEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
+
+  setDeleting() {
+    if (this.#mode === Mode.EDITING) {
+      this.#tripPointEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
+
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#tripPointComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#tripPointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#tripPointEditComponent.shake(resetFormState);
   }
 
   #replaceFormToCard = () => {
@@ -125,8 +162,6 @@ export default class TripPointPresenter {
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update,
     );
-
-    this.#replaceFormToCard();
   };
 
   #handleFromReset = (point) => {

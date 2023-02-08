@@ -1,6 +1,7 @@
 export const DATE_FORMAT = 'DD MMM';
 export const TIME_FORMAT = 'HH:MM';
 export const FORM_INPUT_TIME_FORMAT = 'DD/MM/YY HH:MM';
+export const FLATPICKR_DATE_FORMAT = 'd/m/y H:i';
 
 export const FilterType = {
   EVERYTHING: 'everything',
@@ -27,4 +28,5 @@ export const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };
