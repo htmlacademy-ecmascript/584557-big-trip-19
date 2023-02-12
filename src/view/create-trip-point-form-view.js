@@ -147,10 +147,10 @@ function createCreateTripPointFormTemplate(state, allOffers, destinations) {
 
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time">From</label>
-            <input class="event__input  event__input--time" id="event-start-time" type="text" name="event-start-time" value="${eventTimeStart}" ${isDisabled ? 'disabled' : ''}>
+            <input class="event__input  event__input--time" id="event-start-time" type="text" name="event-start-time" value="${eventTimeStart || ''}" ${isDisabled ? 'disabled' : ''}>
             &mdash;
             <label class="visually-hidden" for="event-end-time">To</label>
-            <input class="event__input  event__input--time" id="event-end-time" type="text" name="event-end-time" value="${eventTimeEnd}" ${isDisabled ? 'disabled' : ''}>
+            <input class="event__input  event__input--time" id="event-end-time" type="text" name="event-end-time" value="${eventTimeEnd || ''}" ${isDisabled ? 'disabled' : ''}>
           </div>
 
           <div class="event__field-group  event__field-group--price">
@@ -355,8 +355,8 @@ export default class CreateTripPointFormView extends AbstractStatefulView {
           maxTime: this._state.dateTo,
           enableTime: true,
           // eslint-disable-next-line
-        time_24hr: true,
-          defaultDate: this._state.dateFrom,
+          time_24hr: true,
+          // defaultDate: this._state.dateFrom,
           onClose: this.#dateFromChangeHandler,
         },
       )
@@ -374,7 +374,7 @@ export default class CreateTripPointFormView extends AbstractStatefulView {
           enableTime: true,
           // eslint-disable-next-line
           time_24hr: true,
-          defaultDate: this._state.dateTo,
+          // defaultDate: this._state.dateTo,
           onClose: this.#dateToChangeHandler,
         },
       )

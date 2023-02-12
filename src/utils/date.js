@@ -32,7 +32,7 @@ function getEventTimeString(date) {
 
 function getFormTimeString(date) {
   if(!date) {
-    return dayjs().format(FORM_INPUT_TIME_FORMAT);
+    return null;
   }
 
   return dayjs(date).format(FORM_INPUT_TIME_FORMAT);

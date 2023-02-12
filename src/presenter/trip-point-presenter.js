@@ -152,6 +152,8 @@ export default class TripPointPresenter {
   };
 
   #handleFormSubmit = (update) => {
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+
     const isMinorUpdate =
       !isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
       !isDatesEqual(this.#point.dateTo, update.dateTo) ||
@@ -165,6 +167,8 @@ export default class TripPointPresenter {
   };
 
   #handleFromReset = (point) => {
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+
     this.#handleDataChange(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,

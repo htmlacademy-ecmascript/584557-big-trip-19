@@ -1,24 +1,24 @@
 import { toCamelCase } from './string.js';
 
-const isObject = function (obj) {
-  return obj === Object(obj) && !Array.isArray(obj) && typeof obj !== 'function';
+const isObject = function (item) {
+  return item === Object(item) && !Array.isArray(item) && typeof item !== 'function';
 };
 
-const keysToCamel = function (obj) {
-  if (isObject(obj)) {
+const keysToCamel = function (item) {
+  if (isObject(item)) {
     const n = {};
 
-    Object.keys(obj)
+    Object.keys(item)
       .forEach((k) => {
-        n[toCamelCase(k)] = keysToCamel(obj[k]);
+        n[toCamelCase(k)] = keysToCamel(item[k]);
       });
 
     return n;
-  } else if (Array.isArray(obj)) {
-    return obj.map((i) => keysToCamel(i));
+  } else if (Array.isArray(item)) {
+    return item.map((i) => keysToCamel(i));
   }
 
-  return obj;
+  return item;
 };
 
 export { keysToCamel };
