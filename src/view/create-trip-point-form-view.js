@@ -356,7 +356,6 @@ export default class CreateTripPointFormView extends AbstractStatefulView {
           enableTime: true,
           // eslint-disable-next-line
           time_24hr: true,
-          // defaultDate: this._state.dateFrom,
           onClose: this.#dateFromChangeHandler,
         },
       )
@@ -374,7 +373,6 @@ export default class CreateTripPointFormView extends AbstractStatefulView {
           enableTime: true,
           // eslint-disable-next-line
           time_24hr: true,
-          // defaultDate: this._state.dateTo,
           onClose: this.#dateToChangeHandler,
         },
       )
