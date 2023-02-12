@@ -4,7 +4,6 @@ import OffersModel from './model/offers-model.js';
 import FilterModel from './model/filter-model.js';
 import DestinationsModel from './model/destinations-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
-import { destinations } from './mock/destinations.js';
 import PointsApiService from './api-sevices/points-api-service.js';
 import DestinationsApiService from './api-sevices/destinations-api-service.js';
 import OffersApiService from './api-sevices/offers-api-service.js';
@@ -26,7 +25,7 @@ const offersModel = new OffersModel({
 const destinationsModel = new DestinationsModel({
   destinationsApiService: new DestinationsApiService(END_POINT, AUTHORIZATION)
 });
-const filterModel = new FilterModel(destinations);
+const filterModel = new FilterModel();
 
 const filterPresenter = new FilterPresenter({
   filterContainer: filtersContainerElement,
